@@ -17,6 +17,7 @@ import {
 import { ReplayComposition } from "./ReplayComposition.jsx";
 const App = () => {
   const [gameState, setGameState] = useState("menu");
+  const gameStateRef = useRef("menu");
   const [role, setRole] = useState(null);
   const [myPlayerId, setMyPlayerId] = useState(1);
   const [replayData, setReplayData] = useState([]);
@@ -26,6 +27,10 @@ const App = () => {
   const requestRef = useRef();
   const gameRef = useRef(JSON.parse(JSON.stringify(initialState)));
   const recordingRef = useRef([]);
+  const updateGameState = (newState) => {
+    setGameState(newState);
+    gameStateRef.current = newState;
+  };
   useEffect(() => {
     const setup = async () => {
       await initRoom();
@@ -54,7 +59,7 @@ const App = () => {
     setup();
   }, [role, myPlayerId]);
   const startGame = async (mode) => {
-    setGameState("waiting");
+    updateGameState("waiting");
     setStatusMessage("Joining queue...");
     const peers = Object.values(room.peers);
     const myId = room.clientId;
@@ -64,38 +69,45 @@ const App = () => {
     if (mode === "practice" || !p2Id) {
       setRole("host");
       setMyPlayerId(1);
-      setGameState("playing");
+      updateGameState("playing");
       setStatusMessage("Practice Mode (Solo)");
-      startGameLoop(true);
+      startGameLoop(true, true);
     } else {
       if (myId === p1Id) {
         setRole("host");
         setMyPlayerId(1);
-        setGameState("playing");
-        startGameLoop(false);
+        updateGameState("playing");
+        startGameLoop(false, true);
       } else if (myId === p2Id) {
         setRole("client");
         setMyPlayerId(2);
-        setGameState("playing");
-        startGameLoop(false);
+        updateGameState("playing");
+        startGameLoop(false, false);
       } else {
         setStatusMessage("Room full. Spectating.");
       }
     }
   };
-  const startGameLoop = (isAiMode) => {
+  const startGameLoop = (isAiMode, isHost) => {
     gameRef.current = JSON.parse(JSON.stringify(initialState));
     recordingRef.current = [];
     let lastTime = performance.now();
     const loop = (time) => {
       const dt = (time - lastTime) / 16.66;
       lastTime = time;
-      if (gameState !== "playing" && gameState !== "waiting") return;
-      if (role === "host") {
+      if (gameStateRef.current !== "playing" && gameStateRef.current !== "waiting") return;
+      if (isHost) {
         if (isAiMode) {
-          const targetY = gameRef.current.ball.y - gameRef.current.p2.height / 2;
-          const diff = targetY - gameRef.current.p2.y;
-          gameRef.current.p2.y += diff * 0.1;
+          const aiSpeed = 7 * dt;
+          const p2 = gameRef.current.p2;
+          const ball = gameRef.current.ball;
+          const targetY = ball.y - p2.height / 2;
+          let dy = targetY - p2.y;
+          if (Math.abs(dy) > aiSpeed) {
+            dy = Math.sign(dy) * aiSpeed;
+          }
+          p2.y += dy;
+          p2.y = Math.max(0, Math.min(CANVAS_HEIGHT - p2.height, p2.y));
         }
         const updatedState = updatePhysics(gameRef.current, dt);
         gameRef.current = updatedState;
@@ -139,7 +151,7 @@ const App = () => {
     }
   };
   const handleInput = (e) => {
-    if (gameState !== "playing") return;
+    if (gameStateRef.current !== "playing") return;
     let clientY;
     if (e.touches) {
       clientY = e.touches[0].clientY;
@@ -202,7 +214,7 @@ const App = () => {
         const res = await fetch(latest.replay_url);
         const data = await res.json();
         setReplayData(data);
-        setGameState("replay");
+        updateGameState("replay");
       } else {
         alert("No replays found.");
       }
@@ -235,26 +247,26 @@ const App = () => {
       false,
       {
         fileName: "<stdin>",
-        lineNumber: 290,
+        lineNumber: 306,
         columnNumber: 21
       }
     ),
-    /* @__PURE__ */ jsxDEV("div", { className: "ui-layer", children: /* @__PURE__ */ jsxDEV("div", { style: { position: "absolute", top: 20, left: 20 }, children: /* @__PURE__ */ jsxDEV("button", { onClick: () => setGameState("menu"), children: "Exit Replay" }, void 0, false, {
+    /* @__PURE__ */ jsxDEV("div", { className: "ui-layer", children: /* @__PURE__ */ jsxDEV("div", { style: { position: "absolute", top: 20, left: 20 }, children: /* @__PURE__ */ jsxDEV("button", { onClick: () => updateGameState("menu"), children: "Exit Replay" }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 309,
+      lineNumber: 325,
       columnNumber: 29
     }) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 308,
+      lineNumber: 324,
       columnNumber: 25
     }) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 307,
+      lineNumber: 323,
       columnNumber: 21
     })
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 289,
+    lineNumber: 305,
     columnNumber: 17
   }) : /* @__PURE__ */ jsxDEV(Fragment, { children: [
     /* @__PURE__ */ jsxDEV(
@@ -271,70 +283,70 @@ const App = () => {
       false,
       {
         fileName: "<stdin>",
-        lineNumber: 315,
+        lineNumber: 331,
         columnNumber: 21
       }
     ),
     /* @__PURE__ */ jsxDEV("div", { className: "score-board", children: [
       /* @__PURE__ */ jsxDEV("span", { className: "p1-score", children: score.p1 }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 325,
+        lineNumber: 341,
         columnNumber: 25
       }),
       /* @__PURE__ */ jsxDEV("span", { className: "p2-score", children: score.p2 }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 326,
+        lineNumber: 342,
         columnNumber: 25
       })
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 324,
+      lineNumber: 340,
       columnNumber: 21
     }),
     gameState === "menu" && /* @__PURE__ */ jsxDEV("div", { className: "ui-layer", children: /* @__PURE__ */ jsxDEV("div", { className: "ui-content", children: [
       /* @__PURE__ */ jsxDEV("h1", { children: "NEON PONG" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 332,
+        lineNumber: 348,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("p", { children: "Multiplayer with Powerups" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 333,
+        lineNumber: 349,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("button", { onClick: () => startGame("ranked"), children: "Find Match" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 334,
+        lineNumber: 350,
         columnNumber: 33
       }),
-      /* @__PURE__ */ jsxDEV("button", { onClick: () => startGame("practice"), className: "secondary", children: "Practice" }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("button", { onClick: () => startGame("practice"), className: "secondary", children: "Vs AI" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 335,
+        lineNumber: 351,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("button", { onClick: viewLastReplay, className: "secondary", children: "Last Replay" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 336,
+        lineNumber: 352,
         columnNumber: 33
       })
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 331,
+      lineNumber: 347,
       columnNumber: 29
     }) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 330,
+      lineNumber: 346,
       columnNumber: 25
     }),
     gameState === "waiting" && /* @__PURE__ */ jsxDEV("div", { className: "ui-layer", children: /* @__PURE__ */ jsxDEV("div", { className: "ui-content", children: [
       /* @__PURE__ */ jsxDEV("h2", { children: "Waiting for Opponent..." }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 344,
+        lineNumber: 360,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("p", { children: "Share the URL to invite a friend." }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 345,
+        lineNumber: 361,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("button", { onClick: () => {
@@ -342,35 +354,35 @@ const App = () => {
         setStatusMessage("Link Copied!");
       }, className: "secondary", children: "Copy Link" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 346,
+        lineNumber: 362,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("p", { children: statusMessage }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 350,
+        lineNumber: 366,
         columnNumber: 33
       })
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 343,
+      lineNumber: 359,
       columnNumber: 30
     }) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 342,
+      lineNumber: 358,
       columnNumber: 25
     })
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 314,
+    lineNumber: 330,
     columnNumber: 17
   }) }, void 0, false, {
     fileName: "<stdin>",
-    lineNumber: 287,
+    lineNumber: 303,
     columnNumber: 9
   });
 };
 createRoot(document.getElementById("app")).render(/* @__PURE__ */ jsxDEV(App, {}, void 0, false, {
   fileName: "<stdin>",
-  lineNumber: 360,
+  lineNumber: 376,
   columnNumber: 51
 }));
