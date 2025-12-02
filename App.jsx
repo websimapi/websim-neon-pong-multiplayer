@@ -150,12 +150,9 @@ const App = () => {
     };
     requestRef.current = requestAnimationFrame(loop);
   };
-  const handleScore = async (state) => {
-    const frames = [...recordingRef.current];
-    recordingRef.current = [];
+  const handleScore = (state) => {
     if (roleRef.current === "host") {
       setScore({ p1: state.p1.score, p2: state.p2.score });
-      uploadReplay(frames, state.p1.score, state.p2.score);
       if (state.p1.score >= winningScoreRef.current || state.p2.score >= winningScoreRef.current) {
         const winnerId = state.p1.score > state.p2.score ? 1 : 2;
         endMatch(winnerId, state.p1.score, state.p2.score);
@@ -163,6 +160,8 @@ const App = () => {
     }
   };
   const endMatch = (winnerId, s1, s2) => {
+    const frames = [...recordingRef.current];
+    uploadReplay(frames, s1, s2);
     room.updateRoomState({
       gameActive: false,
       matchEnded: true,
@@ -288,26 +287,26 @@ const App = () => {
       false,
       {
         fileName: "<stdin>",
-        lineNumber: 341,
+        lineNumber: 338,
         columnNumber: 21
       }
     ),
     /* @__PURE__ */ jsxDEV("div", { className: "ui-layer", children: /* @__PURE__ */ jsxDEV("div", { style: { position: "absolute", top: 20, left: 20 }, children: /* @__PURE__ */ jsxDEV("button", { onClick: () => updateGameState("menu"), children: "Exit Replay" }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 360,
+      lineNumber: 357,
       columnNumber: 29
     }) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 359,
+      lineNumber: 356,
       columnNumber: 25
     }) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 358,
+      lineNumber: 355,
       columnNumber: 21
     })
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 340,
+    lineNumber: 337,
     columnNumber: 17
   }) : /* @__PURE__ */ jsxDEV(Fragment, { children: [
     /* @__PURE__ */ jsxDEV(
@@ -324,149 +323,149 @@ const App = () => {
       false,
       {
         fileName: "<stdin>",
-        lineNumber: 366,
+        lineNumber: 363,
         columnNumber: 21
       }
     ),
     /* @__PURE__ */ jsxDEV("div", { className: "score-board", children: [
       /* @__PURE__ */ jsxDEV("span", { className: "p1-score", children: score.p1 }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 376,
+        lineNumber: 373,
         columnNumber: 25
       }),
       /* @__PURE__ */ jsxDEV("span", { className: "p2-score", children: score.p2 }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 377,
+        lineNumber: 374,
         columnNumber: 25
       })
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 375,
+      lineNumber: 372,
       columnNumber: 21
     }),
     gameState === "menu" && /* @__PURE__ */ jsxDEV("div", { className: "ui-layer", children: /* @__PURE__ */ jsxDEV("div", { className: "ui-content", children: [
       /* @__PURE__ */ jsxDEV("h1", { children: "NEON PONG" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 383,
+        lineNumber: 380,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("p", { children: "Multiplayer with Powerups" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 384,
+        lineNumber: 381,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("div", { className: "setting-row", children: [
         /* @__PURE__ */ jsxDEV("label", { children: "First to: " }, void 0, false, {
           fileName: "<stdin>",
-          lineNumber: 387,
+          lineNumber: 384,
           columnNumber: 37
         }),
         /* @__PURE__ */ jsxDEV("select", { value: winningScore, onChange: (e) => setWinningScore(Number(e.target.value)), children: [
           /* @__PURE__ */ jsxDEV("option", { value: 3, children: "3 Points" }, void 0, false, {
             fileName: "<stdin>",
-            lineNumber: 389,
+            lineNumber: 386,
             columnNumber: 41
           }),
           /* @__PURE__ */ jsxDEV("option", { value: 5, children: "5 Points" }, void 0, false, {
             fileName: "<stdin>",
-            lineNumber: 390,
+            lineNumber: 387,
             columnNumber: 41
           }),
           /* @__PURE__ */ jsxDEV("option", { value: 10, children: "10 Points" }, void 0, false, {
             fileName: "<stdin>",
-            lineNumber: 391,
+            lineNumber: 388,
             columnNumber: 41
           }),
           /* @__PURE__ */ jsxDEV("option", { value: 21, children: "21 Points" }, void 0, false, {
             fileName: "<stdin>",
-            lineNumber: 392,
+            lineNumber: 389,
             columnNumber: 41
           })
         ] }, void 0, true, {
           fileName: "<stdin>",
-          lineNumber: 388,
+          lineNumber: 385,
           columnNumber: 37
         })
       ] }, void 0, true, {
         fileName: "<stdin>",
-        lineNumber: 386,
+        lineNumber: 383,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("button", { onClick: () => startGame("ranked"), children: "Find Match" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 396,
+        lineNumber: 393,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("button", { onClick: () => startGame("practice"), className: "secondary", children: "Vs AI" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 397,
+        lineNumber: 394,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("button", { onClick: viewLastReplay, className: "secondary", children: "Last Replay" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 398,
+        lineNumber: 395,
         columnNumber: 33
       })
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 382,
+      lineNumber: 379,
       columnNumber: 29
     }) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 381,
+      lineNumber: 378,
       columnNumber: 25
     }),
     gameState === "gameOver" && /* @__PURE__ */ jsxDEV("div", { className: "ui-layer", children: /* @__PURE__ */ jsxDEV("div", { className: "ui-content", children: [
       /* @__PURE__ */ jsxDEV("h1", { children: "GAME OVER" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 406,
+        lineNumber: 403,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("h2", { style: { color: winner === 1 ? "#0ff" : "#f0f" }, children: winner === myPlayerId ? "YOU WIN!" : role === "host" && myPlayerId === 1 ? "PLAYER 2 WINS!" : "PLAYER 1 WINS!" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 407,
+        lineNumber: 404,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("p", { className: "final-score", children: [
         /* @__PURE__ */ jsxDEV("span", { style: { color: "#0ff" }, children: score.p1 }, void 0, false, {
           fileName: "<stdin>",
-          lineNumber: 411,
+          lineNumber: 408,
           columnNumber: 37
         }),
         " - ",
         /* @__PURE__ */ jsxDEV("span", { style: { color: "#f0f" }, children: score.p2 }, void 0, false, {
           fileName: "<stdin>",
-          lineNumber: 411,
+          lineNumber: 408,
           columnNumber: 87
         })
       ] }, void 0, true, {
         fileName: "<stdin>",
-        lineNumber: 410,
+        lineNumber: 407,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("button", { onClick: () => updateGameState("menu"), children: "Main Menu" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 413,
+        lineNumber: 410,
         columnNumber: 33
       })
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 405,
+      lineNumber: 402,
       columnNumber: 29
     }) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 404,
+      lineNumber: 401,
       columnNumber: 25
     }),
     gameState === "waiting" && /* @__PURE__ */ jsxDEV("div", { className: "ui-layer", children: /* @__PURE__ */ jsxDEV("div", { className: "ui-content", children: [
       /* @__PURE__ */ jsxDEV("h2", { children: "Waiting for Opponent..." }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 421,
+        lineNumber: 418,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("p", { children: "Share the URL to invite a friend." }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 422,
+        lineNumber: 419,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("button", { onClick: () => {
@@ -474,35 +473,35 @@ const App = () => {
         setStatusMessage("Link Copied!");
       }, className: "secondary", children: "Copy Link" }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 423,
+        lineNumber: 420,
         columnNumber: 33
       }),
       /* @__PURE__ */ jsxDEV("p", { children: statusMessage }, void 0, false, {
         fileName: "<stdin>",
-        lineNumber: 427,
+        lineNumber: 424,
         columnNumber: 33
       })
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 420,
+      lineNumber: 417,
       columnNumber: 30
     }) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 419,
+      lineNumber: 416,
       columnNumber: 25
     })
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 365,
+    lineNumber: 362,
     columnNumber: 17
   }) }, void 0, false, {
     fileName: "<stdin>",
-    lineNumber: 338,
+    lineNumber: 335,
     columnNumber: 9
   });
 };
 createRoot(document.getElementById("app")).render(/* @__PURE__ */ jsxDEV(App, {}, void 0, false, {
   fileName: "<stdin>",
-  lineNumber: 437,
+  lineNumber: 434,
   columnNumber: 51
 }));
