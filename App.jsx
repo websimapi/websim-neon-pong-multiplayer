@@ -337,9 +337,17 @@ const App = () => {
         lineNumber: 345,
         columnNumber: 33
       }),
-      /* @__PURE__ */ jsxDEV("p", { children: statusMessage }, void 0, false, {
+      /* @__PURE__ */ jsxDEV("button", { onClick: () => {
+        navigator.clipboard.writeText(window.location.href);
+        setStatusMessage("Link Copied!");
+      }, className: "secondary", children: "Copy Link" }, void 0, false, {
         fileName: "<stdin>",
         lineNumber: 346,
+        columnNumber: 33
+      }),
+      /* @__PURE__ */ jsxDEV("p", { children: statusMessage }, void 0, false, {
+        fileName: "<stdin>",
+        lineNumber: 350,
         columnNumber: 33
       })
     ] }, void 0, true, {
@@ -363,6 +371,6 @@ const App = () => {
 };
 createRoot(document.getElementById("app")).render(/* @__PURE__ */ jsxDEV(App, {}, void 0, false, {
   fileName: "<stdin>",
-  lineNumber: 356,
+  lineNumber: 360,
   columnNumber: 51
 }));
