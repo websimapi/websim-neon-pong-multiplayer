@@ -58,6 +58,28 @@ canvas {
     max-width: 90%;
 }
 
+.setting-row {
+    margin: 15px 0;
+    font-size: 1.2rem;
+}
+
+.setting-row select {
+    background: #000;
+    color: #0ff;
+    border: 1px solid #0ff;
+    padding: 5px 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    margin-left: 10px;
+    border-radius: 5px;
+}
+
+.final-score {
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
 h1 {
     color: #0ff;
     text-shadow: 0 0 10px #0ff;
