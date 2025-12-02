@@ -1,0 +1,130 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #050505;
+    color: #fff;
+    font-family: 'Courier New', Courier, monospace;
+    touch-action: none; /* Prevent pull-to-refresh on mobile */
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.3);
+}
+
+.ui-content {
+    pointer-events: auto;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 2rem;
+    border: 2px solid #0ff;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 20px #0ff;
+    max-width: 90%;
+}
+
+h1 {
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff;
+    margin-top: 0;
+}
+
+button {
+    background: #0ff;
+    color: #000;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: transform 0.1s;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+button.secondary {
+    background: transparent;
+    border: 2px solid #f0f;
+    color: #f0f;
+}
+
+.score-board {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 3rem;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.p1-score { color: #0ff; text-shadow: 0 0 10px #0ff; }
+.p2-score { color: #f0f; text-shadow: 0 0 10px #f0f; }
+
+.status-bar {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    color: #aaa;
+    pointer-events: none;
+}
+
+.replay-player {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+}
+
+.replay-controls {
+    margin-top: 10px;
+}
+
